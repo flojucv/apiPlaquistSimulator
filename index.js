@@ -1,10 +1,10 @@
 const express = require("express");
 const cors = require('cors');
+const fs = require('fs');
 const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
-const actualiteRouter = require("./router/actualite");
 
 const options = {
     "origin": "http://localhost:4200",
@@ -23,7 +23,28 @@ app.get("/", (req, res) => {
     res.json({ message: "ok" });
 })
 
-app.use("/actualite", actualiteRouter);
+fs.readdir("./router/", (error, f) => {
+    if (error) console.log(error);
+    console.log(`┌────────────────────────────────┐\n│             ROUTE              │\n├───────────────────────────┬────┤`)
+
+    f.forEach((f) => {
+        const fileRouter = require(`./router/${f}`);
+        const nameRoute = f.split(".")[0];
+        let fName = ""
+        if (f.length > 27)
+            fName = `${f.substring(0, 25)}...`
+        else {
+            fName = `${f}`;
+            for (let i = f.length; i < 27; i++) {
+                fName += ' ';
+            }
+        }
+        console.log(`│${fName}│ ✔  │`)
+        app.use(`/${nameRoute}`, fileRouter);
+    });
+    console.log("└───────────────────────────┴────┘")
+});
+
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
@@ -33,5 +54,8 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`Server Listening on PORT: ${PORT}`);
+    console.log(`┌────────────────────────────────┐\n│             SERVER             │\n├────────────────────────────────┤`);
+    console.log(`│Starting                     OK │`);
+    console.log(`│Listening on PORT          ${PORT} │`);
+    console.log("└────────────────────────────────┘")
 })

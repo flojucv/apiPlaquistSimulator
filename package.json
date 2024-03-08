@@ -4,7 +4,8 @@
   "description": "Api REST with nodejs and express for angular website Plaquist Simulator",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "flojucv",
   "license": "ISC",
@@ -12,6 +13,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
+    "fs": "^0.0.1-security",
     "mysql2": "^3.9.2"
   }
 }
